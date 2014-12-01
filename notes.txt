@@ -1,0 +1,25 @@
+notes about the problem :-
+
+nurse scheduling problem
+
+goal = assign shifts to nurses on each day
+
+shift types = morning/evening/night ? duration
+
+average hours per week 40 ? what is average
+
+average shift time 8 hrs ? average implied
+
+nurses in morning/evening = at least 3
+
+nurses in night = at least 2
+
+night shift = at most 4 done
+
+seq of 6 days = at least 1 day off done
+
+seq of 5 days = at most 2 rest days done
+
+no day work between two days off done
+
+minimize number of nurses
