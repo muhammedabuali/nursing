@@ -92,30 +92,49 @@ length_(X,L):- length(L,X).
 
 count_(I,X,L):- nth1(I,L,Z), length(Z,N), N#>=X.
 
-range(L):- L ins 0..41 , all_different(L),
-			nurse_shifts(L).
+range(L):-  all_different(L).%,nurse_shifts(L).
 
 check_count(Z,X):-
 	Z #=< 1, X #>= 1.
 check_count(2,X):-
-	X #>= 0.
+	X #>= 1.
 
-shifts_num(Vars,0).
+shifts_num(Vars,N,N):-
+	Shift #= N mod 3,
+	count_oc(Vars,N,Z), check_count(Shift,Z).
+
+shifts_num(Vars,X,N):-
+	X #< N,Shift #= X mod 3,
+	count_oc(Vars,X,Z), check_count(Shift,Z),
+	X2 #= X +1,
+	shifts_num(Vars,X2,N).
+
+shifts_num(_,0).
 shifts_num(Vars,N):-
 	N#>0, Shift #= N mod 3,
 	count_oc(Vars,N,X), check_count(Shift,X),
 	N2 #= N -1,
 	shifts_num(Vars,N2).
 
+generate_pairs(0,[0-1]).
+generate_pairs(N,[N-_|L2]):-
+	N >0,
+	N2 is N -1,
+	generate_pairs(N2,L2).
+
 
 schedule(Nurses):-
-	N = 9,
+	N = 2,
 	length(Nurses,N),
 	maplist(length_(10),Nurses),
-	maplist(range,Nurses),
 	flatten(Nurses,Vars),
-	shifts_num(Vars,41),
-	label(Vars), label([N]).
+	%generate_pairs(41,L),
+	%global_cardinality(Vars,L),
+	Vars ins 0..20,
+	all_different(Vars),
+	%maplist(range,Nurses),
+	shifts_num(Vars,0,18),
+	label(Vars).%, label([N]).
 
 
 %time((length(L, 11), all_different(L),
